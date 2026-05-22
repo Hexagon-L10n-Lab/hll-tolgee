@@ -1,3 +1,44 @@
+## [3.190.4](https://github.com/tolgee/tolgee-platform/compare/v3.190.3...v3.190.4) (2026-05-22)
+
+
+### Bug Fixes
+
+* update outdated CSV format help link in glossary import dialog ([#3674](https://github.com/tolgee/tolgee-platform/issues/3674)) ([5618493](https://github.com/tolgee/tolgee-platform/commit/56184930351b157802f75b8e5fba33aeb86bac5b))
+
+## [3.190.3](https://github.com/tolgee/tolgee-platform/compare/v3.190.2...v3.190.3) (2026-05-21)
+
+
+### Bug Fixes
+
+* do not flag missing terminal punctuation in GrammarCheck ([#3673](https://github.com/tolgee/tolgee-platform/issues/3673)) ([b9f5f23](https://github.com/tolgee/tolgee-platform/commit/b9f5f236643b04230c0c2d451863aed061d0e34b))
+
+## [3.190.2](https://github.com/tolgee/tolgee-platform/compare/v3.190.1...v3.190.2) (2026-05-21)
+
+
+### Bug Fixes
+
+* orphan batch job redis locks ([#3675](https://github.com/tolgee/tolgee-platform/issues/3675)) ([bb21d52](https://github.com/tolgee/tolgee-platform/commit/bb21d5254d64448058001f4cf3922560c0c8b1ac))
+* performance of import ([#3629](https://github.com/tolgee/tolgee-platform/issues/3629)) ([223c509](https://github.com/tolgee/tolgee-platform/commit/223c509b7ffc6cc60fe77751f624088157abf498))
+
+## [3.190.1](https://github.com/tolgee/tolgee-platform/compare/v3.190.0...v3.190.1) (2026-05-21)
+
+
+### Bug Fixes
+
+* TM suggestion panel overflowing its container & e2e tests fixes ([#3678](https://github.com/tolgee/tolgee-platform/issues/3678)) ([e15fb47](https://github.com/tolgee/tolgee-platform/commit/e15fb47adf2dbb06bc2090587554494151f3510f)), closes [#3596](https://github.com/tolgee/tolgee-platform/issues/3596)
+
+
+### Performance Improvements
+
+* filter entity pre-commit events by entity type at dispatch ([#3669](https://github.com/tolgee/tolgee-platform/issues/3669)) ([9c29a0b](https://github.com/tolgee/tolgee-platform/commit/9c29a0bc20c3200b4acf07bd1af8e1f72d11a143))
+
+# [3.190.0](https://github.com/tolgee/tolgee-platform/compare/v3.189.0...v3.190.0) (2026-05-20)
+
+
+### Features
+
+* Translation Memory Management ([#3596](https://github.com/tolgee/tolgee-platform/issues/3596)) ([f8c8129](https://github.com/tolgee/tolgee-platform/commit/f8c8129c370fcafada4a2f30058caa056a3bc596))
+
 # [3.189.0](https://github.com/tolgee/tolgee-platform/compare/v3.188.1...v3.189.0) (2026-05-20)
 
 

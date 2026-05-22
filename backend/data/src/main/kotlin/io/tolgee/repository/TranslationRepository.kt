@@ -62,6 +62,8 @@ interface TranslationRepository : JpaRepository<Translation, Long> {
     languageId: Long,
   ): Optional<Translation>
 
+  fun findAllByKey(key: Key): List<Translation>
+
   @Query(
     """
     from Translation t 
@@ -127,12 +129,20 @@ interface TranslationRepository : JpaRepository<Translation, Long> {
 
   fun deleteByIdIn(ids: Collection<Long>)
 
+  /**
+   * Exact-equality auto-translate lookup. Returns up to [pageable.size] translations whose
+   * key has a base-language translation equal to [baseTranslationText]. Used by the batch /
+   * MT pre-translate pipeline: the trigram-similarity suggestion query in
+   * `AbstractTranslationMemoryService` is too slow to run per-key, so the hot path resolves
+   * exact matches here and falls back to MT for the rest.
+   */
   @Query(
     """
-      select 
-      new io.tolgee.model.views.TranslationMemoryItemView(baseTranslation.text, target.text, k.name, null, 1, k.id)
+      select
+      new io.tolgee.model.views.TranslationMemoryItemView(baseTranslation.text, target.text, k.name, null, 1.0f, k.id)
       from Translation baseTranslation
       join baseTranslation.key k
+      left join k.branch b
       join k.project p
       join Translation target on
             target.key = k and
@@ -141,7 +151,9 @@ interface TranslationRepository : JpaRepository<Translation, Long> {
             target.text is not null
       where baseTranslation.language = p.baseLanguage and
         baseTranslation.text = :baseTranslationText and
-        k <> :key
+        k <> :key and
+        k.deletedAt is null and
+        (b is null or b.isDefault = true)
       """,
   )
   fun getTranslationMemoryValue(
@@ -252,27 +264,65 @@ interface TranslationRepository : JpaRepository<Translation, Long> {
     languageIds: Collection<Long>,
   ): List<Translation>
 
-  // flushAutomatically=false: prevent auto-flush when called from BeforeTransactionCompletionProcess
-  @Modifying(flushAutomatically = false)
-  @Query(
-    nativeQuery = true,
-    value =
-      "UPDATE translation SET qa_checks_stale = true " +
-        "WHERE key_id IN (SELECT id FROM key WHERE project_id = :projectId)",
-  )
-  fun setQaChecksStaleByProjectId(projectId: Long)
-
-  // flushAutomatically=false: prevent auto-flush when called from BeforeTransactionCompletionProcess
   @Modifying(flushAutomatically = false)
   @Query(
     nativeQuery = true,
     value =
       "UPDATE translation SET qa_checks_stale = true " +
         "WHERE key_id IN (SELECT id FROM key WHERE project_id = :projectId) " +
-        "AND language_id IN (:languageIds)",
+        "AND qa_checks_stale = false",
+  )
+  fun setQaChecksStaleByProjectId(projectId: Long)
+
+  @Modifying(flushAutomatically = false)
+  @Query(
+    nativeQuery = true,
+    value =
+      "UPDATE translation SET qa_checks_stale = true " +
+        "WHERE key_id IN (SELECT id FROM key WHERE project_id = :projectId) " +
+        "AND language_id IN (:languageIds) " +
+        "AND qa_checks_stale = false",
   )
   fun setQaChecksStaleByProjectIdAndLanguageIds(
     projectId: Long,
     languageIds: List<Long>,
+  )
+
+  @Modifying(flushAutomatically = false)
+  @Query(
+    nativeQuery = true,
+    value =
+      "UPDATE translation SET qa_checks_stale = true " +
+        "WHERE id IN (:ids) AND qa_checks_stale = false",
+  )
+  fun setQaChecksStaleByIds(ids: Collection<Long>)
+
+  @Modifying(flushAutomatically = false)
+  @Query(
+    nativeQuery = true,
+    value =
+      "UPDATE translation SET qa_checks_stale = true " +
+        "WHERE key_id IN (:keyIds) AND qa_checks_stale = false",
+  )
+  fun setQaChecksStaleByKeyIds(keyIds: Collection<Long>)
+
+  // Ids bound as a single bigint[] (= ANY(:translationIds)) to stay under
+  // PostgreSQL's 65,535 prepared-statement parameter limit at chunk sizes that
+  // would otherwise expand to that many placeholders.
+  @Modifying(flushAutomatically = false)
+  @Query(
+    nativeQuery = true,
+    value =
+      "UPDATE translation SET qa_checks_stale = true " +
+        "WHERE key_id IN (" +
+        "  SELECT key_id FROM translation " +
+        "  WHERE id = ANY(:translationIds) AND language_id = :baseLanguageId" +
+        ") " +
+        "AND language_id <> :baseLanguageId " +
+        "AND qa_checks_stale = false",
+  )
+  fun setQaChecksStaleForBaseTranslationKeys(
+    translationIds: LongArray,
+    baseLanguageId: Long,
   )
 }
