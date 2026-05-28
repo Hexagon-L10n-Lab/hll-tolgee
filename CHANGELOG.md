@@ -1,3 +1,47 @@
+# [3.193.0](https://github.com/tolgee/tolgee-platform/compare/v3.192.0...v3.193.0) (2026-05-27)
+
+
+### Bug Fixes
+
+* allow API key access to get-modified-entities-by-revision endpoint ([#3697](https://github.com/tolgee/tolgee-platform/issues/3697)) ([a314585](https://github.com/tolgee/tolgee-platform/commit/a31458526989336a8c3b6b51cad0575a6f973be2)), closes [#2284](https://github.com/tolgee/tolgee-platform/issues/2284)
+
+
+### Features
+
+* announcement banner for Translation Memory management ([#3692](https://github.com/tolgee/tolgee-platform/issues/3692)) ([afde9b3](https://github.com/tolgee/tolgee-platform/commit/afde9b38d11fa2d83bb02417cef9188627399c24)), closes [tolgee/documentation#1100](https://github.com/tolgee/documentation/issues/1100)
+* include projectId in webhook payload ([#3695](https://github.com/tolgee/tolgee-platform/issues/3695)) ([20f291b](https://github.com/tolgee/tolgee-platform/commit/20f291b8840764e6e0b5fd6443d104b9f1f12e45))
+
+# [3.192.0](https://github.com/tolgee/tolgee-platform/compare/v3.191.0...v3.192.0) (2026-05-26)
+
+
+### Bug Fixes
+
+* speed up QA batch checks (branch copy, LT cache, chunk batching) ([#3670](https://github.com/tolgee/tolgee-platform/issues/3670)) ([03cceb7](https://github.com/tolgee/tolgee-platform/commit/03cceb77a9540b0b5e6819b0d961d2102394d3d3))
+
+
+### Features
+
+* drop ICU conversion toggle from import settings UI ([#3691](https://github.com/tolgee/tolgee-platform/issues/3691)) ([1624de7](https://github.com/tolgee/tolgee-platform/commit/1624de702805b4d351bb66b74e6404c8c50682b3))
+
+# [3.191.0](https://github.com/tolgee/tolgee-platform/compare/v3.190.6...v3.191.0) (2026-05-26)
+
+
+### Bug Fixes
+
+* translation memory UI issues ([#3688](https://github.com/tolgee/tolgee-platform/issues/3688)) ([7a85203](https://github.com/tolgee/tolgee-platform/commit/7a85203852b3f5b7a4a9ad4eb02206283aacc3de))
+
+
+### Features
+
+* rework QA filter to support per-type + per-language scoping ([#3667](https://github.com/tolgee/tolgee-platform/issues/3667)) ([d492bb4](https://github.com/tolgee/tolgee-platform/commit/d492bb405c228d0c4fb8df919e3de9c4844b93b7))
+
+## [3.190.6](https://github.com/tolgee/tolgee-platform/compare/v3.190.5...v3.190.6) (2026-05-26)
+
+
+### Bug Fixes
+
+* prevent branch merge from dropping translation updates ([#3625](https://github.com/tolgee/tolgee-platform/issues/3625)) ([13f45a0](https://github.com/tolgee/tolgee-platform/commit/13f45a08946403286d4d54059b6abb9eba5fbf8c))
+
 ## [3.190.5](https://github.com/tolgee/tolgee-platform/compare/v3.190.4...v3.190.5) (2026-05-25)
 
 

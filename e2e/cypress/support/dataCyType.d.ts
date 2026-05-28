@@ -399,7 +399,6 @@ declare namespace DataCy {
         "import-conflicts-not-resolved-dialog" |
         "import-conflicts-not-resolved-dialog-cancel-button" |
         "import-conflicts-not-resolved-dialog-resolve-button" |
-        "import-convert-placeholders-to-icu-checkbox" |
         "import-file-error" |
         "import-file-error-collapse-button" |
         "import-file-error-more-less-button" |
@@ -892,6 +891,7 @@ declare namespace DataCy {
         "tm-empty-wizard-import" |
         "tm-empty-wizard-manual" |
         "tm-entries-header" |
+        "tm-entries-header-base-badge" |
         "tm-entries-language-filter" |
         "tm-entries-language-select-item" |
         "tm-entries-layout-flat" |

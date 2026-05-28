@@ -1331,7 +1331,8 @@ export interface components {
         | "FEATURE_LABELS"
         | "FEATURE_SUGGESTIONS_AND_LABELS"
         | "FEATURE_IMPROVED_FIGMA_ANDROID_AND_IOS"
-        | "FEATURE_BRANCHING";
+        | "FEATURE_BRANCHING"
+        | "FEATURE_TRANSLATION_MEMORY_MANAGEMENT";
     };
     ApiKeyModel: {
       /** @description Description */
@@ -2874,6 +2875,7 @@ export interface components {
         | "request_parse_error"
         | "request_validation_error"
         | "filter_by_value_state_not_valid"
+        | "filter_by_value_qa_check_type_not_valid"
         | "import_has_expired"
         | "tag_not_from_project"
         | "translation_text_too_long"
@@ -3607,16 +3609,12 @@ export interface components {
       unresolvedConflicts?: components["schemas"]["SimpleImportConflictResult"][];
     };
     ImportSettingsModel: {
-      /** @description If true, placeholders from other formats will be converted to ICU when possible */
-      convertPlaceholdersToIcu: boolean;
       /** @description If false, only updates keys, skipping the creation of new keys */
       createNewKeys: boolean;
       /** @description If true, key descriptions will be overridden by the import */
       overrideKeyDescriptions: boolean;
     };
     ImportSettingsRequest: {
-      /** @description If true, placeholders from other formats will be converted to ICU when possible */
-      convertPlaceholdersToIcu: boolean;
       /** @description If false, only updates keys, skipping the creation of new keys */
       createNewKeys: boolean;
       /** @description If true, key descriptions will be overridden by the import */
@@ -3680,6 +3678,7 @@ export interface components {
       eeSubscription?: components["schemas"]["InitialDataEeSubscriptionModel"];
       languageTag?: string;
       preferredOrganization?: components["schemas"]["PrivateOrganizationModel"];
+      qaCheckCategories?: components["schemas"]["QaCheckCategoryModel"][];
       serverConfiguration: components["schemas"]["PublicConfigurationDTO"];
       ssoInfo?: components["schemas"]["PublicSsoTenantModel"];
       userInfo?: components["schemas"]["PrivateUserAccountModel"];
@@ -6654,6 +6653,7 @@ export interface components {
         | "request_parse_error"
         | "request_validation_error"
         | "filter_by_value_state_not_valid"
+        | "filter_by_value_qa_check_type_not_valid"
         | "import_has_expired"
         | "tag_not_from_project"
         | "translation_text_too_long"
@@ -17243,29 +17243,13 @@ export interface operations {
         filterLabel?: string[];
         /** Filter keys with open QA issues in lang */
         filterHasQaIssuesInLang?: string[];
-        /** Filter keys with specific QA check type issues */
-        filterQaCheckType?: (
-          | "EMPTY_TRANSLATION"
-          | "MISSING_PLURAL_CATEGORIES"
-          | "CHARACTER_CASE_MISMATCH"
-          | "REPEATED_WORDS"
-          | "PUNCTUATION_MISMATCH"
-          | "TRIM_CHECK"
-          | "SPACES_MISMATCH"
-          | "UNMATCHED_NEWLINES"
-          | "MISSING_NUMBERS"
-          | "SPECIAL_CHARACTER_MISMATCH"
-          | "BRACKETS_MISMATCH"
-          | "BRACKETS_UNBALANCED"
-          | "SPELLING"
-          | "GRAMMAR"
-          | "KEY_LENGTH_LIMIT"
-          | "DIFFERENT_URLS"
-          | "INCONSISTENT_PLACEHOLDERS"
-          | "INCONSISTENT_HTML"
-          | "HTML_SYNTAX"
-          | "ICU_SYNTAX"
-        )[];
+        /**
+         * Filter keys with specific QA check type issues in the format: languageTag,checkType.
+         * You can use this parameter multiple times.
+         *
+         * A key matches if any of the selected check types is present in any of the selected languages.
+         */
+        filterQaCheckType?: string[];
         /** Filter keys whose QA checks are stale (pending recomputation) in lang. When set, only keys with at least one stale translation in any of the provided languages are returned. */
         filterQaChecksStaleInLang?: string[];
         /** Filter keys with any suggestions in lang */
@@ -17395,29 +17379,13 @@ export interface operations {
         filterLabel?: string[];
         /** Filter keys with open QA issues in lang */
         filterHasQaIssuesInLang?: string[];
-        /** Filter keys with specific QA check type issues */
-        filterQaCheckType?: (
-          | "EMPTY_TRANSLATION"
-          | "MISSING_PLURAL_CATEGORIES"
-          | "CHARACTER_CASE_MISMATCH"
-          | "REPEATED_WORDS"
-          | "PUNCTUATION_MISMATCH"
-          | "TRIM_CHECK"
-          | "SPACES_MISMATCH"
-          | "UNMATCHED_NEWLINES"
-          | "MISSING_NUMBERS"
-          | "SPECIAL_CHARACTER_MISMATCH"
-          | "BRACKETS_MISMATCH"
-          | "BRACKETS_UNBALANCED"
-          | "SPELLING"
-          | "GRAMMAR"
-          | "KEY_LENGTH_LIMIT"
-          | "DIFFERENT_URLS"
-          | "INCONSISTENT_PLACEHOLDERS"
-          | "INCONSISTENT_HTML"
-          | "HTML_SYNTAX"
-          | "ICU_SYNTAX"
-        )[];
+        /**
+         * Filter keys with specific QA check type issues in the format: languageTag,checkType.
+         * You can use this parameter multiple times.
+         *
+         * A key matches if any of the selected check types is present in any of the selected languages.
+         */
+        filterQaCheckType?: string[];
         /** Filter keys whose QA checks are stale (pending recomputation) in lang. When set, only keys with at least one stale translation in any of the provided languages are returned. */
         filterQaChecksStaleInLang?: string[];
         /** Filter keys with any suggestions in lang */
@@ -17583,29 +17551,13 @@ export interface operations {
         filterLabel?: string[];
         /** Filter keys with open QA issues in lang */
         filterHasQaIssuesInLang?: string[];
-        /** Filter keys with specific QA check type issues */
-        filterQaCheckType?: (
-          | "EMPTY_TRANSLATION"
-          | "MISSING_PLURAL_CATEGORIES"
-          | "CHARACTER_CASE_MISMATCH"
-          | "REPEATED_WORDS"
-          | "PUNCTUATION_MISMATCH"
-          | "TRIM_CHECK"
-          | "SPACES_MISMATCH"
-          | "UNMATCHED_NEWLINES"
-          | "MISSING_NUMBERS"
-          | "SPECIAL_CHARACTER_MISMATCH"
-          | "BRACKETS_MISMATCH"
-          | "BRACKETS_UNBALANCED"
-          | "SPELLING"
-          | "GRAMMAR"
-          | "KEY_LENGTH_LIMIT"
-          | "DIFFERENT_URLS"
-          | "INCONSISTENT_PLACEHOLDERS"
-          | "INCONSISTENT_HTML"
-          | "HTML_SYNTAX"
-          | "ICU_SYNTAX"
-        )[];
+        /**
+         * Filter keys with specific QA check type issues in the format: languageTag,checkType.
+         * You can use this parameter multiple times.
+         *
+         * A key matches if any of the selected check types is present in any of the selected languages.
+         */
+        filterQaCheckType?: string[];
         /** Filter keys whose QA checks are stale (pending recomputation) in lang. When set, only keys with at least one stale translation in any of the provided languages are returned. */
         filterQaChecksStaleInLang?: string[];
         /** Filter keys with any suggestions in lang */
@@ -22531,29 +22483,13 @@ export interface operations {
         filterLabel?: string[];
         /** Filter keys with open QA issues in lang */
         filterHasQaIssuesInLang?: string[];
-        /** Filter keys with specific QA check type issues */
-        filterQaCheckType?: (
-          | "EMPTY_TRANSLATION"
-          | "MISSING_PLURAL_CATEGORIES"
-          | "CHARACTER_CASE_MISMATCH"
-          | "REPEATED_WORDS"
-          | "PUNCTUATION_MISMATCH"
-          | "TRIM_CHECK"
-          | "SPACES_MISMATCH"
-          | "UNMATCHED_NEWLINES"
-          | "MISSING_NUMBERS"
-          | "SPECIAL_CHARACTER_MISMATCH"
-          | "BRACKETS_MISMATCH"
-          | "BRACKETS_UNBALANCED"
-          | "SPELLING"
-          | "GRAMMAR"
-          | "KEY_LENGTH_LIMIT"
-          | "DIFFERENT_URLS"
-          | "INCONSISTENT_PLACEHOLDERS"
-          | "INCONSISTENT_HTML"
-          | "HTML_SYNTAX"
-          | "ICU_SYNTAX"
-        )[];
+        /**
+         * Filter keys with specific QA check type issues in the format: languageTag,checkType.
+         * You can use this parameter multiple times.
+         *
+         * A key matches if any of the selected check types is present in any of the selected languages.
+         */
+        filterQaCheckType?: string[];
         /** Filter keys whose QA checks are stale (pending recomputation) in lang. When set, only keys with at least one stale translation in any of the provided languages are returned. */
         filterQaChecksStaleInLang?: string[];
         /** Filter keys with any suggestions in lang */
@@ -22863,29 +22799,13 @@ export interface operations {
         filterLabel?: string[];
         /** Filter keys with open QA issues in lang */
         filterHasQaIssuesInLang?: string[];
-        /** Filter keys with specific QA check type issues */
-        filterQaCheckType?: (
-          | "EMPTY_TRANSLATION"
-          | "MISSING_PLURAL_CATEGORIES"
-          | "CHARACTER_CASE_MISMATCH"
-          | "REPEATED_WORDS"
-          | "PUNCTUATION_MISMATCH"
-          | "TRIM_CHECK"
-          | "SPACES_MISMATCH"
-          | "UNMATCHED_NEWLINES"
-          | "MISSING_NUMBERS"
-          | "SPECIAL_CHARACTER_MISMATCH"
-          | "BRACKETS_MISMATCH"
-          | "BRACKETS_UNBALANCED"
-          | "SPELLING"
-          | "GRAMMAR"
-          | "KEY_LENGTH_LIMIT"
-          | "DIFFERENT_URLS"
-          | "INCONSISTENT_PLACEHOLDERS"
-          | "INCONSISTENT_HTML"
-          | "HTML_SYNTAX"
-          | "ICU_SYNTAX"
-        )[];
+        /**
+         * Filter keys with specific QA check type issues in the format: languageTag,checkType.
+         * You can use this parameter multiple times.
+         *
+         * A key matches if any of the selected check types is present in any of the selected languages.
+         */
+        filterQaCheckType?: string[];
         /** Filter keys whose QA checks are stale (pending recomputation) in lang. When set, only keys with at least one stale translation in any of the provided languages are returned. */
         filterQaChecksStaleInLang?: string[];
         /** Filter keys with any suggestions in lang */
